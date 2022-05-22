@@ -22,6 +22,45 @@ class ViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
+    
+    func makeSeat(_ colour: String) -> UIImageView{
+        let image = UIImage(named: colour)
+        let imageView = UIImageView(image: image)
+        let viewWidth: CGFloat = UIScreen.main.bounds.width - 40
+        //let viewHeight: CGFloat = UIScreen.main.bounds.height - 400
+        if (colour == "RedSeat"){
+            imageView.tag = -1
+        }
+        else if(colour == "GreenSeat"){
+            imageView.tag = 2
+        }
+        else{
+            imageView.tag = 1
+        }
+        let imageWidth: CGFloat = 20
+        let imageHeight: CGFloat = 20
+        
+        let rect = CGRect(x: 20, y: 699, width: imageWidth, height: imageHeight)
+        
+        
+        imageView.frame = rect
+        imageView.center = CGPoint(x: CGFloat(0), y: CGFloat(0))
+        
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(gestureFired(_:)))
+        gestureRecognizer.numberOfTapsRequired = 1
+        gestureRecognizer.numberOfTouchesRequired = 1
+        
+        imageView.addGestureRecognizer(gestureRecognizer)
+        imageView.isUserInteractionEnabled = true
+        
+        
+        self.view.addSubview(imageView)
+        
+        
+        
+        return imageView
+        
+    }
     @objc func gestureFired(_ gesture: UITapGestureRecognizer){
         print(seatArray)
 
@@ -32,62 +71,26 @@ class ViewController: UIViewController {
             if fireView.frame.equalTo(gesture.view!.frame){
                 print("Tapped Seat")
                 
-                if(fireView.tag % 2 == 1){
+                if fireView.tag == -1 {
+                    let newSeat = makeSeat("RedSeat")
+                    
+                }
+                
+                else if(fireView.tag % 2 == 1 && fireView.tag > 0){
                     fireView.tag = fireView.tag + 1
-                    let image = UIImage(named: "GreenSeat")
-                    let imageView = UIImageView(image: image)
-
-                    imageView.tag = fireView.tag
-                    let imageWidth: CGFloat = 20
-                    let imageHeight: CGFloat = 20
-                    
-                    let rect = CGRect(x: 20, y: 699, width: imageWidth, height: imageHeight)
-                    
-                    
-                    imageView.frame = rect
-                    imageView.center = fireView.center
-                    let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(gestureFired(_:)))
-                    gestureRecognizer.numberOfTapsRequired = 1
-                    gestureRecognizer.numberOfTouchesRequired = 1
-                    
-                    imageView.addGestureRecognizer(gestureRecognizer)
-                    imageView.isUserInteractionEnabled = true
+                    let image = makeSeat("GreenSeat")
+                    seatArray.append(image)
                     
                     fireView.removeFromSuperview()
-                    seatArray.append(imageView)
-                    self.view.addSubview(imageView)
+                    self.view.addSubview(image)
+                    
                 }
                 else{
                     fireView.tag = fireView.tag + 1
-                    let image = UIImage(named: "SeatIcon")
-                    let imageView = UIImageView(image: image)
-
-                    imageView.tag = fireView.tag
-                    let imageWidth: CGFloat = 20
-                    let imageHeight: CGFloat = 20
-                    
-                    let rect = CGRect(x: 20, y: 699, width: imageWidth, height: imageHeight)
-                    
-                    
-                    imageView.frame = rect
-                    imageView.center = fireView.center
-                    let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(gestureFired(_:)))
-                    gestureRecognizer.numberOfTapsRequired = 1
-                    gestureRecognizer.numberOfTouchesRequired = 1
-                    
-                    imageView.addGestureRecognizer(gestureRecognizer)
-                    imageView.isUserInteractionEnabled = true
-                    
-                    while seatArray.contains(fireView){
-                        if let itemToRemoveIndex =  seatArray.index(of: fireView){
-                            seatArray.remove(at: itemToRemoveIndex)
-                        }
-                    }
-                    
+                    let image = makeSeat("SeatIcon")
                     
                     fireView.removeFromSuperview()
-                    
-                    self.view.addSubview(imageView)
+                    self.view.addSubview(image)
                 }
                 
 
@@ -95,46 +98,24 @@ class ViewController: UIViewController {
             }
     }
     
+    func removeSeatArray(_ fireView: UIImageView){
+        while seatArray.contains(fireView){
+            if let itemToRemoveIndex =  seatArray.index(of: fireView){
+                seatArray.remove(at: itemToRemoveIndex)
+            }
+        }
+    }
+    
     @objc func generateSeats(){
-        for i in 1...5{
-            for j in 1...5{
-                let newImage = generateUIImageView()
+        for i in 1...6{
+            for j in 1...6{
+                let newImage = makeSeat("SeatIcon")
                 newImage.center = CGPoint(x: CGFloat(100 + 25 * i), y: CGFloat(200 + 70 * j ))
             }
         }
     }
     
-    @objc func generateUIImageView() -> UIImageView {
-            let tagNum = 1
-            
-            let image = UIImage(named: "SeatIcon")
-            let imageView = UIImageView(image: image)
-            let viewWidth: CGFloat = UIScreen.main.bounds.width - 40
-            //let viewHeight: CGFloat = UIScreen.main.bounds.height - 400
-            imageView.tag = tagNum
-            let imageWidth: CGFloat = 20
-            let imageHeight: CGFloat = 20
-            
-            let rect = CGRect(x: 20, y: 699, width: imageWidth, height: imageHeight)
-            
-            
-            imageView.frame = rect
-            imageView.center = CGPoint(x: CGFloat(0), y: CGFloat(0))
-            
-            let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(gestureFired(_:)))
-            gestureRecognizer.numberOfTapsRequired = 1
-            gestureRecognizer.numberOfTouchesRequired = 1
-            
-            imageView.addGestureRecognizer(gestureRecognizer)
-            imageView.isUserInteractionEnabled = true
-            
-            
-            self.view.addSubview(imageView)
-            
-            
-            
-            return imageView
-        }
+    
 
 }
 
