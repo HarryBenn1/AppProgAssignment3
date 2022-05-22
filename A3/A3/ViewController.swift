@@ -116,7 +116,18 @@ class ViewController: UIViewController {
             
             return imageView
         }
-    
+    @IBAction func CancelSeats(_ sender: Any) {
+        if seatArray.count > 0 {
+            for image in seatArray{
+                image.self.removeFromSuperview()
+                let newImage = generateUIImageView("SeatIcon", 1)
+                newImage.center = image.center
+                
+            }
+            
+            seatArray.removeAll()
+        }
+    }
     
 }
 
