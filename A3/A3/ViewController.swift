@@ -23,8 +23,9 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    func makeSeat(_ colour: String) -> UIImageView{
+    func makeSeat(_ colour: String, _ tag: Int) -> UIImageView{
         let image = UIImage(named: colour)
+        print(colour)
         let imageView = UIImageView(image: image)
         let viewWidth: CGFloat = UIScreen.main.bounds.width - 40
         //let viewHeight: CGFloat = UIScreen.main.bounds.height - 400
@@ -72,25 +73,27 @@ class ViewController: UIViewController {
                 print("Tapped Seat")
                 
                 if fireView.tag == -1 {
-                    let newSeat = makeSeat("RedSeat")
+                    print("red")
+                    let newSeat = makeSeat("RedSeat", fireView.tag)
                     
                 }
                 
                 else if(fireView.tag % 2 == 1 && fireView.tag > 0){
+                    print("Green")
                     fireView.tag = fireView.tag + 1
-                    let image = makeSeat("GreenSeat")
-                    seatArray.append(image)
                     
-                    fireView.removeFromSuperview()
+                    fireView.self.removeFromSuperview()
+                    let image = makeSeat("GreenSeat", fireView.tag)
+                    seatArray.append(image)
                     self.view.addSubview(image)
                     
                 }
                 else{
                     fireView.tag = fireView.tag + 1
-                    let image = makeSeat("SeatIcon")
+                    print("normal Seat")
+                    let image = makeSeat("SeatIcon", fireView.tag)
                     
-                    fireView.removeFromSuperview()
-                    self.view.addSubview(image)
+                    
                 }
                 
 
@@ -109,7 +112,7 @@ class ViewController: UIViewController {
     @objc func generateSeats(){
         for i in 1...6{
             for j in 1...6{
-                let newImage = makeSeat("SeatIcon")
+                let newImage = makeSeat("SeatIcon", 1)
                 newImage.center = CGPoint(x: CGFloat(100 + 25 * i), y: CGFloat(200 + 70 * j ))
             }
         }
